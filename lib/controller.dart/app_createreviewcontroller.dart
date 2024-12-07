@@ -128,6 +128,7 @@ class CreateReviewController extends GetxController {
         "Tags": [
           {"T": "Action", "V": "CASESAVE"},
           {"T": "src", "V": "MOBILE"},
+          {"T": "lts", "V": DateTime.now().toUtc()},
           {"T": "dk1", "V": "0"},
           {
             "T": "c1",
@@ -516,62 +517,46 @@ class CreateReviewController extends GetxController {
     }
   }
 
-  Future<bool> editcaseQuestions({
-  dynamic caseId,
-  String? question,
-  dynamic caseQuestionId,
-}) async {
-  try {
-    if (caseId == null || caseQuestionId == null || question == null || question.trim().isEmpty) {
-      debugPrint("Invalid input data");
+  editcaseQuestions(
+      {dynamic caseId, String? question, dynamic caseQuestionId}) async {
+    try {
+      String? token = await SharedPrefs.getString(SharedPrefs.TOKEN);
+      var body = {
+        "Token": token,
+        "Tags": [
+          {"T": "Action", "V": "CASEQUESTIONS"},
+          {"T": "src", "V": "MOBILE"},
+          {"T": "dk1", "V": caseId.toString()},
+          {"T": "dk2", "V": caseQuestionId.toString()},
+          {"T": "c2", "V": question},
+          {"T": "c10", "V": "1"},
+        ]
+      };
+      var jsonBody = jsonEncode(body);
+      debugPrint(jsonBody);
+
+      var response = await DioHandler.dioPOST(body: jsonBody);
+      if (response['Status'] == 1) {
+        questionData.value = (response['Data'][0] as List)
+            .map((question) => QuestionData.fromJson(question))
+            .toList();
+
+        caseQuestion.value = (response['Data'][1] as List)
+            .map((casequestion) => CaseQuestion.fromJson(casequestion))
+            .toList();
+
+        debugPrint(questionData.toString());
+        debugPrint(caseQuestion.toString());
+        return true;
+      } else {
+        debugPrint(response);
+        return false;
+      }
+    } catch (e) {
+      debugPrint("the error ${e.toString()}");
       return false;
     }
-
-    String? token = await SharedPrefs.getString(SharedPrefs.TOKEN);
-
-    var body = {
-      "Token": token,
-      "Tags": [
-        {"T": "Action", "V": "CASEQUESTIONS"},
-        {"T": "src", "V": "MOBILE"},
-        {"T": "lts", "V": DateTime.now().toIso8601String()},
-        {"T": "dk1", "V": caseId.toString()},
-        {"T": "dk2", "V": caseQuestionId.toString()},
-        {"T": "c1", "V": "0"},
-        {"T": "c2", "V": question},
-        {"T": "c10", "V": "1"},
-      ]
-    };
-
-    var jsonBody = jsonEncode(body);
-    debugPrint("Payload: $jsonBody");
-
-    var response = await DioHandler.dioPOST(body: jsonBody);
-
-    if (response['Status'] == 1) {
-      questionData.value = (response['Data'][0] as List)
-          .map((question) => QuestionData.fromJson(question))
-          .toList();
-
-      caseQuestion.value = (response['Data'][1] as List)
-          .map((casequestion) => CaseQuestion.fromJson(casequestion))
-          .toList();
-
-      debugPrint("Updated questionData: ${questionData.toString()}");
-      debugPrint("Updated caseQuestion: ${caseQuestion.toString()}");
-
-      questionData.refresh(); // Ensure UI updates
-      return true;
-    } else {
-      debugPrint("Server response: $response");
-      return false;
-    }
-  } catch (e) {
-    debugPrint("Error in editcaseQuestions: ${e.toString()}");
-    return false;
   }
-}
-
 
   getfileUploadtokenBox() async {
     var response = await DioHandler.dioPOSTGetTOken(

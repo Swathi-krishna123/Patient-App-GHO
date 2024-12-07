@@ -563,6 +563,7 @@ class MedicalDetails extends StatelessWidget {
                                             colorText: Colors.white,
                                           );
                                         } else {
+                                          
                                           // Add the question to the list and close the bottom sheet
                                           controller.customQuestions
                                               .add(questionController.text);
@@ -653,6 +654,7 @@ class MedicalDetails extends StatelessWidget {
                                                                   .value
                                                                   ?.Data[0][0]
                                                                   .id);
+                                                            
                                                       updatequestionstatus
                                                           ? Get.back()
                                                           : Get.back();

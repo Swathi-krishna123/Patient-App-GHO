@@ -63,6 +63,7 @@ class AppUserController extends GetxController {
       "Tags": [
         {"T": "Action", "V": "CHPWD"},
         {"T": "src", "V": "MOBILE"},
+        {"T": "lts", "V": DateTime.now().toUtc()},
         {"T": "dk1", "V": currentPassword},
         {"T": "dk2", "V": newPassword},
       ]
@@ -93,6 +94,7 @@ class AppUserController extends GetxController {
       "Tags": [
         {"T": "Action", "V": "PWDRECOVERY"},
         {"T": "src", "V": "MOBILE"},
+        {"T": "lts", "V": DateTime.now().toUtc()},
         {"T": "dk1", "V": password},
       ]
     };
@@ -136,6 +138,7 @@ class AppUserController extends GetxController {
       "Tags": [
         {"T": "Action", "V": "SIGNUP"},
         {"T": "src", "V": "MOBILE"},
+        {"T": "lts", "V": DateTime.now().toUtc()},
         {"T": "dk1", "V": firstname},
         {"T": "dk2", "V": lastname},
         {"T": "c1", "V": email},
@@ -197,6 +200,7 @@ class AppUserController extends GetxController {
       "Tags": [
         {"T": "Action", "V": "OTP"},
         {"T": "src", "V": "MOBILE"},
+        {"T": "lts", "V": DateTime.now().toUtc()},
         {"T": "dk1", "V": email},
         {"T": "dk2", "V": otp},
         {"T": "c10", "V": "2"},
@@ -255,6 +259,7 @@ class AppUserController extends GetxController {
       "Tags": [
         {"T": "Action", "V": "SIGNIN"},
         {"T": "src", "V": "MOBILE"},
+        {"T": "lts", "V": DateTime.now().toUtc()},
         {"T": "dk1", "V": email},
         {"T": "dk2", "V": password},
         {"T": "c10", "V": "1"},
@@ -290,6 +295,7 @@ class AppUserController extends GetxController {
       "Tags": [
         {"T": "Action", "V": "NEWOTP"},
         {"T": "src", "V": "MOBILE"},
+        {"T": "lts", "V": DateTime.now().toUtc()},
         {"T": "dk1", "V": email},
       ]
     };
@@ -328,6 +334,7 @@ class AppUserController extends GetxController {
         "Tags": [
           {"T": "Action", "V": "PROFILE"},
           {"T": "src", "V": "MOBILE"},
+          {"T": "lts", "V": DateTime.now().toUtc()},
         ]
       };
       String jsonBody = jsonEncode(body);
@@ -399,6 +406,7 @@ class AppUserController extends GetxController {
         "Tags": [
           {"T": "Action", "V": "PROFILE"},
           {"T": "src", "V": "MOBILE"},
+          {"T": "lts", "V": DateTime.now().toUtc()},
           {"T": "c1", "V": profileBody},
           {"T": "c10", "V": "2"}
         ]
